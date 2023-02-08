@@ -2,13 +2,21 @@ import { Router } from "express";
 import { validateBody, authenticateToken } from "@/middlewares";
 import { checkOrUncheckSchema } from "@/schemas/check-or-uncheck-schema";
 import { createHabitSchema } from "@/schemas/create-habit-schema";
-import { postHabit, getAllHabits, getTodayHabits, checkHabit, uncheckHabit } from "@/controllers/habits-controller";
+import {
+  postHabit,
+  getAllHabits,
+  getTodayHabits,
+  checkHabit,
+  uncheckHabit,
+  deleteHabit,
+} from "@/controllers/habits-controller";
 
 const habitsRouter = Router();
 
 habitsRouter
   .all("/*", authenticateToken)
   .post("/", validateBody(createHabitSchema), postHabit)
+  .delete("/:habitId", deleteHabit)
   .get("/", getAllHabits)
   .get("/today", getTodayHabits)
   .post("/today/check", validateBody(checkOrUncheckSchema), checkHabit)

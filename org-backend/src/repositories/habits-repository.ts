@@ -15,6 +15,38 @@ async function createHabit({ name, userId }: CreateParams) {
   });
 }
 
+async function findHabit(habitId: number) {
+  return prisma.habit.findFirst({
+    where: {
+      id: habitId
+    }
+  });
+}
+
+async function deleteHabitDay(habitId: number) {
+  return prisma.habitDay.deleteMany({
+    where: {
+      habitId
+    }
+  });
+}
+
+async function deleteHabitLog(habitId: number) {
+  return prisma.habitLog.deleteMany({
+    where: {
+      habitId
+    }
+  });
+}
+
+async function deleteHabitById(habitId: number) {
+  return prisma.habit.delete({
+    where: {
+      id: habitId
+    }
+  });
+}
+
 async function createHabitDay(habitId: number, day: number) {
   return prisma.habitDay.create({
     data: {
@@ -73,6 +105,10 @@ const sessionRepository = {
   findHabitLog,
   checkOrUncheckUserHabit,
   createHabitLog,
+  deleteHabitById,
+  findHabit,
+  deleteHabitDay,
+  deleteHabitLog
 };
 
 export default sessionRepository;

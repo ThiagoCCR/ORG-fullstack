@@ -13,6 +13,18 @@ async function createHabit({ name, days }: HabitParams, userId: number) {
   return newHabit;
 }
 
+async function deleteHabit(habitId: number) {
+  const habitExists = await HabitsRepository.findHabit(habitId);
+  if (!habitExists) throw notFoundError();
+
+  await HabitsRepository.deleteHabitLog(habitId);
+  await HabitsRepository.deleteHabitDay(habitId);
+  const deleted = await HabitsRepository.deleteHabitById(habitId);
+  if (!deleted) throw badRequestError();
+
+  return deleted;
+}
+
 async function findUserHabits(userId: number) {
   const Habits = await HabitsRepository.findAllUserHabits(userId);
   const filteredDays: any = Habits.map((habit) => {
@@ -107,6 +119,7 @@ const habitsService = {
   findUserTodayHabits,
   checkHabit,
   uncheckHabit,
+  deleteHabit,
 };
 
 export default habitsService;

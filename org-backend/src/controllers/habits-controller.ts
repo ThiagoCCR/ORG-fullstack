@@ -16,6 +16,20 @@ export async function postHabit(req: AuthenticatedRequest, res: Response) {
   }
 }
 
+export async function deleteHabit(req: AuthenticatedRequest, res: Response) {
+  const { habitId } = req.params;
+  try {
+    const result = await habitsService.deleteHabit(Number(habitId));
+
+    return res.status(httpStatus.OK).send(result);
+  } catch (error) {
+    if (error.name === "NotFoundError") {
+      return res.status(httpStatus.NOT_FOUND).send(error.message);
+    }
+    return res.status(httpStatus.BAD_REQUEST).send(error.message);
+  }
+}
+
 export async function getAllHabits(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
   try {

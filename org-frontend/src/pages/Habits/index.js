@@ -102,7 +102,6 @@ const Container = styled.div`
   gap: 1rem;
   width: 24rem;
   padding: 1rem 0;
-  min-height: 10rem;
   > h2 {
     font-size: 1.5rem;
     font-weight: 700;

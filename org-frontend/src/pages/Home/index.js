@@ -42,6 +42,8 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: flex-start;
   gap: 2rem;
+  width: 100vw;
+  height: 100vh;
   > h2 {
     font-size: 20px;
     font-weight: 700;
