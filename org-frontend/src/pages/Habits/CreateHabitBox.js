@@ -1,41 +1,44 @@
-import { useState, useCallback, useContext } from "react";
+import { useState, useCallback } from "react";
 import styled from "styled-components";
 import days from "../../configs/constants/days";
 import CreateHabitBoxDay from "./CreateHabitBoxDay";
 import useCreateHabit from "../../hooks/api/useCreateHabit";
-import LoadingContext from "../../configs/contexts/LoadingContext.js";
+import { nanoid } from "nanoid";
 
-export default function CreateHabitBox({ visible, setCreate, getDataFromApi }) {
-  const auth = JSON.parse(localStorage.getItem("org"));
-  const { isLoading, setisLoading } = useContext(LoadingContext);
+
+export default function CreateHabitBox({ visible, setCreate}) {
   const [name, setName] = useState("");
   const [selectedDays, setSelectedDays] = useState([]);
   const { createHabit } = useCreateHabit();
 
+  const eraseData = useCallback(() => {
+    setName("");
+    setSelectedDays([]);
+    setCreate(!visible);
+  }, [setCreate, visible]);
+
   const sendDataToApi = useCallback(async () => {
-    if (name === "" || selectedDays === []) return;
+    const auth = JSON.parse(localStorage.getItem("org"));
+    if (name === "" || selectedDays.length === 0) return;
     try {
-      setisLoading(true);
       await createHabit(auth.token, {
         name,
         days: selectedDays,
       });
-      setName("");
-      setSelectedDays([]);
-      setCreate(false);
-      getDataFromApi();
-      setisLoading(false);
+      eraseData();
     } catch (error) {
       console.error(error.message);
-      setisLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth.token, name, selectedDays, setisLoading]);
+  }, [createHabit, eraseData, name, selectedDays]);
 
-  function eraseData() {
-    setName("");
-    setSelectedDays([]);
-    setCreate(!visible);
+  function handleSelection(day) {
+    if (selectedDays.includes(day)) {
+      const filteredArray = selectedDays.filter(
+        (curr) => curr.number !== day.number
+      );
+      setSelectedDays(filteredArray);
+    }
+    setSelectedDays([...selectedDays, day.number]);
   }
 
   return (
@@ -49,9 +52,9 @@ export default function CreateHabitBox({ visible, setCreate, getDataFromApi }) {
         {days.map((day, i) => (
           <CreateHabitBoxDay
             key={day.number + i}
-            selectedDays={selectedDays}
-            setDays={setSelectedDays}
+            onClickSelect={handleSelection}
             day={day}
+            clicked={false}
           />
         ))}
       </DaysContainer>

@@ -2,34 +2,30 @@ import styled from "styled-components";
 import Header from "../../components/Header/Header.js";
 import HabitBox from "./HabitBox.js";
 import useHabit from "../../hooks/api/useHabit.js";
-import { useState, useCallback, useContext, useEffect } from "react";
-import LoadingContext from "../../configs/contexts/LoadingContext.js";
+import { useState, useCallback, useEffect } from "react";
 import CreateHabitBox from "./CreateHabitBox.js";
 import AddButton from "../../components/Icons/AddButton.js";
+import { nanoid } from "nanoid";
 
 export default function HabitsPage() {
   const auth = JSON.parse(localStorage.getItem("org"));
-  const { isLoading, setisLoading } = useContext(LoadingContext);
   const [habits, setHabits] = useState([]);
   const [create, setCreate] = useState(false);
   const { getHabits } = useHabit();
 
   const getDataFromApi = useCallback(async () => {
     try {
-      setisLoading(true);
       const habits = await getHabits(auth.token);
       setHabits(habits);
-      setisLoading(false);
+      habits.map(hab=>console.log(hab))
     } catch (error) {
       console.error(error.message);
-      setisLoading(false);
     }
-  }, [auth.token, getHabits, setisLoading]);
+  }, [auth.token]);
 
   useEffect(() => {
     getDataFromApi();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getDataFromApi, create]);
 
   return (
     <Wrapper>
@@ -46,7 +42,11 @@ export default function HabitsPage() {
           />
         </div>
       </TitleAndAddHabitContainer>
-      <CreateHabitBox visible={create} setCreate={setCreate} getDataFromApi={getDataFromApi}/>
+      {create ? (
+        <CreateHabitBox visible={create} setCreate={setCreate} />
+      ) : (
+        <div></div>
+      )}
       <Container>
         {habits.length === 0 ? (
           <h2>You have no registered habits</h2>
@@ -54,7 +54,7 @@ export default function HabitsPage() {
           <>
             {habits.map((habit, i) => (
               <HabitBox
-                key={`${habit.name}i`}
+                key={nanoid()}
                 name={habit.name}
                 selectedDays={habit.days}
               />

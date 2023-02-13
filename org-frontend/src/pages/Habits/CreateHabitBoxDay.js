@@ -1,22 +1,20 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-export default function CreateHabitBoxDay({ selectedDays, setDays, day }) {
-  const [clicked, setClicked] = useState(false);
+export default function CreateHabitBoxDay({
+  onClickSelect,
+  day,
+  clicked: initialClicked = false,
+}) {
+  const [clicked, setClicked] = useState(initialClicked);
 
-  function handleSelection() {
-    if (selectedDays.includes(day)) {
-      const filteredArray = selectedDays.filter(
-        (curr) => curr.number !== day.number
-      );
-      setDays(filteredArray);
-    }
-    setDays([...selectedDays, day.number]);
+  function handleClick() {
+    onClickSelect(day);
     setClicked(!clicked);
   }
 
   return (
-    <Wrapper selected={clicked} onClick={handleSelection}>
+    <Wrapper selected={clicked} onClick={handleClick}>
       <p>{day.simbol}</p>
     </Wrapper>
   );
