@@ -50,7 +50,7 @@ const Wrapper = styled.div`
   height: 4rem;
   width: 20rem;
   background-color: ${(props) =>
-    props.selected === true ? "#c6eeae" : "#FC8787"};
+    props.selected === true ? "#93E163" : "#FC8787"};
   border-radius: 3rem;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
   display: flex;
@@ -59,6 +59,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   padding: 0 2rem;
   p {
+    color: #ffffff;
     font-weight: 700;
     font-size: 1.2rem;
   }

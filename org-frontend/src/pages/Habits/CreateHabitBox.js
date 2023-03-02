@@ -3,8 +3,6 @@ import styled from "styled-components";
 import days from "../../configs/constants/days";
 import CreateHabitBoxDay from "./CreateHabitBoxDay";
 import useCreateHabit from "../../hooks/api/useCreateHabit";
-import { nanoid } from "nanoid";
-
 
 export default function CreateHabitBox({ visible, setCreate}) {
   const [name, setName] = useState("");

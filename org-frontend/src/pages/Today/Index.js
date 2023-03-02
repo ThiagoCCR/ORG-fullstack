@@ -2,26 +2,23 @@ import styled from "styled-components";
 import Header from "../../components/Header/Header.js";
 import dayjs from "dayjs";
 import Habit from "./Habit.js";
-import LoadingContext from "../../configs/contexts/LoadingContext";
-import { useEffect, useContext, useCallback, useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 import useTodayHabit from "../../hooks/api/useTodayHabit";
+import FinanceLog from "./FinanceLog.js";
+import AddButton from "../../components/Icons/AddButton.js";
 
 export default function TodayPage() {
-  const { isLoading, setisLoading } = useContext(LoadingContext);
   const Now = dayjs();
-  const auth = JSON.parse(localStorage.getItem("org"));
   const [todayHabits, setTodayHabits] = useState([]);
   const { getTodayHabits } = useTodayHabit();
 
   const getDataFromApi = useCallback(async () => {
     try {
-      setisLoading(true);
+      const auth = JSON.parse(localStorage.getItem("org"));
       const habits = await getTodayHabits(auth.token);
       setTodayHabits(habits);
-      setisLoading(false);
     } catch (error) {
       console.error(error.message);
-      setisLoading(false);
     }
   }, [getTodayHabits]);
 
@@ -36,7 +33,7 @@ export default function TodayPage() {
         {Now.format("dddd").toUpperCase()}, {Now.format("DD/MM")}
       </h1>
       <TodayHabits>
-        <h2>Seus Habitos:</h2>
+        <h2>Your Habits:</h2>
         {todayHabits?.map((habit, i) => (
           <Habit
             key={i}
@@ -47,6 +44,32 @@ export default function TodayPage() {
           />
         ))}
       </TodayHabits>
+      <TodayFinances>
+        <div>
+          <h2>Your Finances:</h2>
+          <div onClick={() => alert("criar")}>
+            <AddButton
+              iconProps={{
+                color: "#040404",
+                className: "global-class-name",
+                size: "35px",
+              }}
+            />
+          </div>{" "}
+        </div>
+        <FinanceLog
+          name={"teste"}
+          type={"output"}
+          logClass={"food"}
+          value={10}
+        />
+        <FinanceLog
+          name={"teste2"}
+          type={"input"}
+          logClass={"food"}
+          value={10}
+        />
+      </TodayFinances>
     </Wrapper>
   );
 }
@@ -78,11 +101,28 @@ const TodayHabits = styled.div`
   align-items: center;
   gap: 2rem;
   width: 380px;
-  min-height: 200px;
   padding: 2rem 0;
   > h2 {
     font-size: 1.5rem;
     font-weight: 700;
     text-align: center;
+  }
+`;
+
+const TodayFinances = styled.div`
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  width: 380px;
+  padding: 2rem 0;
+  > h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    padding-bottom: 1rem;
   }
 `;

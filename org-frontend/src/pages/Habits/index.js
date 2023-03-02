@@ -17,7 +17,6 @@ export default function HabitsPage() {
     try {
       const habits = await getHabits(auth.token);
       setHabits(habits);
-      habits.map(hab=>console.log(hab))
     } catch (error) {
       console.error(error.message);
     }
