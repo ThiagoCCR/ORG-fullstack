@@ -7,10 +7,13 @@ import useTodayHabit from "../../hooks/api/useTodayHabit";
 import FinanceLog from "./FinanceLog.js";
 import AddButton from "../../components/Icons/AddButton.js";
 import { useNavigate } from "react-router-dom";
+import CreateFinanceLogScreen from "./CreateFinanceLogScreen.js";
+
 
 export default function TodayPage() {
   const Now = dayjs();
   const [todayHabits, setTodayHabits] = useState([]);
+  const [showCreateScreen, setShowCreateScreen] = useState(false);
   const { getTodayHabits } = useTodayHabit();
   const navigate = useNavigate();
 
@@ -49,7 +52,7 @@ export default function TodayPage() {
       <TodayFinances>
         <FinanceTitleAndAddButton>
           <h2>Your Finances:</h2>
-          <div onClick={() => navigate("/finances")}>
+          <div onClick={() => setShowCreateScreen(true)}>
             <AddButton
               iconProps={{
                 color: "#040404",
@@ -74,6 +77,7 @@ export default function TodayPage() {
           value={10}
         />
       </TodayFinances>
+    {showCreateScreen ? <CreateFinanceLogScreen/> : <></>}
     </Wrapper>
   );
 }

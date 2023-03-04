@@ -3,17 +3,14 @@ import DeleteIcon from "../../components/Icons/DeleteIcon";
 import SortLogClassIcon from "./SortLogClassIcon";
 
 export default function FinanceLog({ id, name, value, type, logClass }) {
-
-  function handleDeleteLog(){
-
-  }
+  function handleDeleteLog() {}
 
   return (
     <>
       <Wrapper type={type}>
         <TextAndIconContainer>
           <h2>{name}</h2>
-          <SortLogClassIcon logClass={logClass}/>
+          <SortLogClassIcon logClass={logClass} />
         </TextAndIconContainer>
         <ValueContainer>
           <h2>{value}</h2>
