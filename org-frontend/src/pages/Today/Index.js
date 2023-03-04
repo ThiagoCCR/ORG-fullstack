@@ -6,11 +6,13 @@ import { useEffect, useCallback, useState } from "react";
 import useTodayHabit from "../../hooks/api/useTodayHabit";
 import FinanceLog from "./FinanceLog.js";
 import AddButton from "../../components/Icons/AddButton.js";
+import { useNavigate } from "react-router-dom";
 
 export default function TodayPage() {
   const Now = dayjs();
   const [todayHabits, setTodayHabits] = useState([]);
   const { getTodayHabits } = useTodayHabit();
+  const navigate = useNavigate();
 
   const getDataFromApi = useCallback(async () => {
     try {
@@ -45,9 +47,9 @@ export default function TodayPage() {
         ))}
       </TodayHabits>
       <TodayFinances>
-        <div>
+        <FinanceTitleAndAddButton>
           <h2>Your Finances:</h2>
-          <div onClick={() => alert("criar")}>
+          <div onClick={() => navigate("/finances")}>
             <AddButton
               iconProps={{
                 color: "#040404",
@@ -55,15 +57,17 @@ export default function TodayPage() {
                 size: "35px",
               }}
             />
-          </div>{" "}
-        </div>
+          </div>
+        </FinanceTitleAndAddButton>
         <FinanceLog
+          id={1}
           name={"teste"}
           type={"output"}
           logClass={"food"}
           value={10}
         />
         <FinanceLog
+          id={2}
           name={"teste2"}
           type={"input"}
           logClass={"food"}
@@ -119,10 +123,17 @@ const TodayFinances = styled.div`
   gap: 0.5rem;
   width: 380px;
   padding: 2rem 0;
+`;
+
+const FinanceTitleAndAddButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  padding-bottom: 1rem;
+  width: 100%;
   > h2 {
     font-size: 1.5rem;
     font-weight: 700;
-    text-align: center;
-    padding-bottom: 1rem;
   }
 `;
