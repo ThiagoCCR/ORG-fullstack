@@ -77,7 +77,7 @@ export default function TodayPage() {
           value={10}
         />
       </TodayFinances>
-    {showCreateScreen ? <CreateFinanceLogScreen/> : <></>}
+    {showCreateScreen ? <CreateFinanceLogScreen handleClick={setShowCreateScreen}/> : <></>}
     </Wrapper>
   );
 }
